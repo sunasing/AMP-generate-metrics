@@ -1,0 +1,16 @@
+apiVersion: azmonitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prometheus-metrics-app
+  namespace: default
+  labels:
+    app: prometheus-metrics-app
+spec:
+  selector:
+    matchLabels:
+      app: prometheus-metrics-app
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 30s
+    scrapeTimeout: 10s

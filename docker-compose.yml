@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  prometheus-metrics-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: esunayana/prometheus-metrics-app:latest
+    container_name: prometheus-metrics-app
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - metrics-network
+
+networks:
+  metrics-network:
+    driver: bridge
